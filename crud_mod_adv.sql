@@ -1,7 +1,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for crud_mod
+-- Table structure for crud_mod_adv
 -- ----------------------------
 DROP TABLE IF EXISTS `crud_mod_adv`;
 CREATE TABLE `crud_mod_adv` (
