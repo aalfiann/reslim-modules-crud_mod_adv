@@ -527,7 +527,16 @@ use PDO;                                            //To connect with database
 
         public function create() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-    		    $data = $this->createData();
+				$roles = Auth::getRoleID($this->db,$this->token);
+                if ($roles != '5'){
+					$data = $this->createData();
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS404',
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
+					];
+				}
             } else {
                 $data = [
 	    			'status' => 'error',
@@ -542,7 +551,16 @@ use PDO;                                            //To connect with database
 
         public function update() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-    		    $data = $this->updateData();
+				$roles = Auth::getRoleID($this->db,$this->token);
+                if ($roles != '5'){
+					$data = $this->updateData();
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS404',
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
+					];
+				}
             } else {
                 $data = [
 	    			'status' => 'error',
@@ -558,7 +576,16 @@ use PDO;                                            //To connect with database
 
         public function delete() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-    		    $data = $this->deleteData();
+				$roles = Auth::getRoleID($this->db,$this->token);
+                if ($roles == '1'){
+					$data = $this->deleteData();
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS404',
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
+					];
+				}
             } else {
                 $data = [
 	    			'status' => 'error',
