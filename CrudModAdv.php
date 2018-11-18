@@ -620,7 +620,16 @@ use PDO;                                            //To connect with database
 
         public function index() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-				$data = $this->indexData();
+				$roles = Auth::getRoleID($this->db,$this->token);
+                if ($roles <= 2){
+					$data = $this->indexData();
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS404',
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
+					];
+				}
 			} else {
 				$data = [
 	    			'status' => 'error',

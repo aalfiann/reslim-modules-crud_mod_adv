@@ -427,7 +427,7 @@
 						}
 					]
 				},
-				"description": "Index\n---\nThis will index, show or scan all data with pagination.\n\nNote:\n- Format param **firstdate** and **lastdate** is **yyyy-mm-dd** but this is **not required** as default."
+				"description": "Index\n---\nThis will index, show or scan all data with pagination.\n\nNote:\n- Format param **firstdate** and **lastdate** is **yyyy-mm-dd** but this is **not required** as default.\n- The purpose of index is for scan all data, so only user with role **Superuser** and **Admin** who able to access this."
 			},
 			"response": []
 		},
@@ -479,7 +479,7 @@
 						}
 					]
 				},
-				"description": "Index with Keywords\n---\nThis will index, show or scan all invoice data with keywords and pagination.\n\nNote:\n- Format param **firstdate** and **lastdate** is **yyyy-mm-dd** but this is **not required** as default.\n\nAbout Keywords:\n- Keywords is the **Custom_id** field inside table **crud_mod_adv**.\n- Keywords data could be string or json, it is depend from your input data\n- You can call many keywords.  \n  Example:  \n  a. You have Custom_id data like this >> {\"ktp\":\"987\",\"statusid\":1}  \n  b. then you can input just by id \"987\" or separated with commas like this \"ktp\":\"987\",\"statusid\":1  \n  example: http://yourserver.com/api/crud_mod_adv/index/keywords/{yourusername}/{yourtoken}/{page}/{itemsperpage}/?keywords=**\"ktp\":\"987\",\"statusid\":1**&query=&firstdate=2018-08-01&lastdate=2018-08-31"
+				"description": "Index with Keywords\n---\nThis will index, show or scan all invoice data with keywords and pagination.\n\nNote:\n- Format param **firstdate** and **lastdate** is **yyyy-mm-dd** but this is **not required** as default.\n- **Custom_id** is required to more identify the owner's data.\n\nAbout Keywords:\n- Keywords is the **Custom_id** field inside table **crud_mod_adv**.\n- Keywords data could be string or json, it is depend from your input data\n- You can call many keywords.  \n  Example:  \n  a. You have Custom_id data like this >> {\"ktp\":\"987\",\"statusid\":1}  \n  b. then you can input just by id \"987\" or separated with commas like this \"ktp\":\"987\",\"statusid\":1  \n  example: http://yourserver.com/api/crud_mod_adv/index/keywords/{yourusername}/{yourtoken}/{page}/{itemsperpage}/?keywords=**\"ktp\":\"987\",\"statusid\":1**&query=&firstdate=2018-08-01&lastdate=2018-08-31"
 			},
 			"response": []
 		}
