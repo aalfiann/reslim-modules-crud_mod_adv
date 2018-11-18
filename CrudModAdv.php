@@ -607,7 +607,7 @@ use PDO;                                            //To connect with database
 		}
 		
 		public function indexKey() {
-            if (Auth::validToken($this->db,$this->token)){
+            if (Auth::validToken($this->db,$this->token,$this->username)){
 				$data = $this->indexDataWithKey();
 			} else {
 				$data = [
