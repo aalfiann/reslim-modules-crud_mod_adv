@@ -3,10 +3,11 @@
         "name": "CrudModAdv",
         "url": "https://github.com/aalfiann/reslim-modules-crud_mod_adv",
         "description": "Example to create advanced crud module in reSlim",
-        "version": "1.0.2",
+        "version": "1.1.0",
         "require": {
             "reSlim": "1.16.0"
         },
+        "dependency":["modules/genuid"],
         "license": {
             "type": "MIT",
             "url": "https://github.com/aalfiann/reslim-modules-crud_mod_adv/blob/master/LICENSE.md"

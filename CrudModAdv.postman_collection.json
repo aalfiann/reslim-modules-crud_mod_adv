@@ -135,7 +135,7 @@
 							"type": "text"
 						},
 						{
-							"key": "Telp",
+							"key": "Phone",
 							"value": "",
 							"description": "Length is 0-15 {numeric}",
 							"type": "text"
@@ -156,12 +156,6 @@
 							"key": "Custom_id",
 							"value": "",
 							"description": "Length is 0-250 {string/json}",
-							"type": "text"
-						},
-						{
-							"key": "Custom_field",
-							"value": "",
-							"description": "Length is 0-10000 {json}",
 							"type": "text"
 						}
 					]
@@ -218,7 +212,7 @@
 							"type": "text"
 						},
 						{
-							"key": "Telp",
+							"key": "Phone",
 							"value": "",
 							"description": "Length is 0-15 {numeric}",
 							"type": "text"
@@ -242,15 +236,9 @@
 							"type": "text"
 						},
 						{
-							"key": "Custom_field",
-							"value": "",
-							"description": "Length is 0-10000 {json}",
-							"type": "text"
-						},
-						{
 							"key": "ID",
 							"value": "{id}",
-							"description": "Length is 1-11 {numeric,required}",
+							"description": "Length is 1-50 {required}",
 							"type": "text"
 						}
 					]
@@ -297,7 +285,7 @@
 						{
 							"key": "ID",
 							"value": "{id}",
-							"description": "Length is 1-11 {numeric,required}",
+							"description": "Length is 1-50 {required}",
 							"type": "text"
 						}
 					]

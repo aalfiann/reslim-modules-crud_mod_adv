@@ -48,26 +48,27 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
 
     // POST api to create new data
     $app->post('/crud_mod_adv/create', function (Request $request, Response $response) {
-        $cm = new CrudModAdv($this->db);
         $datapost = $request->getParsedBody();
+        $datajson = [
+            'Address' => $datapost['Address'],
+            'Phone' => $datapost['Phone'],
+            'Email' => $datapost['Email'],
+            'Website' => $datapost['Website'] 
+        ];
+        $cm = new CrudModAdv($this->db);
         $cm->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $cm->username = $datapost['Username'];
         $cm->token = $datapost['Token'];
         $cm->fullname = $datapost['Fullname'];
-        $cm->address = $datapost['Address'];
-        $cm->telp = $datapost['Telp'];
-        $cm->email = $datapost['Email'];
-        $cm->website = $datapost['Website'];
         $cm->custom_id = (!empty($datapost['Custom_id'])?$datapost['Custom_id']:'');
-        $cm->custom_field = (!empty($datapost['Custom_field'])?$datapost['Custom_field']:'');
+        $cm->extend = json_encode($datajson);
         $body = $response->getBody();
         $body->write($cm->create());
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParam('Custom_id','0-250'))
-        ->add(new ValidateParam('Custom_field','0-10000','json'))
         ->add(new ValidateParam('Website','0-50','domain'))
         ->add(new ValidateParam('Email','0-50','email'))
-        ->add(new ValidateParam('Telp','0-15','numeric'))
+        ->add(new ValidateParam('Phone','0-15','numeric'))
         ->add(new ValidateParam('Address','0-250'))
         ->add(new ValidateParam('Token','1-250','required'))
         ->add(new ValidateParam(['Username','Fullname'],'1-50','required'));
@@ -75,31 +76,31 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
 
     // POST api to update data
     $app->post('/crud_mod_adv/update', function (Request $request, Response $response) {
-        $cm = new CrudModAdv($this->db);
         $datapost = $request->getParsedBody();
+        $datajson = [
+            'Address' => $datapost['Address'],
+            'Phone' => $datapost['Phone'],
+            'Email' => $datapost['Email'],
+            'Website' => $datapost['Website'] 
+        ];
+        $cm = new CrudModAdv($this->db);
         $cm->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $cm->username = $datapost['Username'];
         $cm->token = $datapost['Token'];
         $cm->fullname = $datapost['Fullname'];
-        $cm->address = $datapost['Address'];
-        $cm->telp = $datapost['Telp'];
-        $cm->email = $datapost['Email'];
-        $cm->website = $datapost['Website'];
         $cm->custom_id = (!empty($datapost['Custom_id'])?$datapost['Custom_id']:'');
-        $cm->custom_field = (!empty($datapost['Custom_field'])?$datapost['Custom_field']:'');
+        $cm->extend = json_encode($datajson);
         $cm->id = $datapost['ID'];
         $body = $response->getBody();
         $body->write($cm->update());
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParam('Custom_id','0-250'))
-        ->add(new ValidateParam('Custom_field','0-10000','json'))
         ->add(new ValidateParam('Website','0-50','domain'))
         ->add(new ValidateParam('Email','0-50','email'))
-        ->add(new ValidateParam('Telp','0-15','numeric'))
+        ->add(new ValidateParam('Phone','0-15','numeric'))
         ->add(new ValidateParam('Address','0-250'))
-        ->add(new ValidateParam('ID','1-11','numeric'))
         ->add(new ValidateParam('Token','1-250','required'))
-        ->add(new ValidateParam(['Username','Fullname'],'1-50','required'));
+        ->add(new ValidateParam(['Username','Fullname','ID'],'1-50','required'));
 
 
     // POST api to delete data

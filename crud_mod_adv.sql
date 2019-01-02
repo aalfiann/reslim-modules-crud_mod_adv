@@ -5,14 +5,10 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `crud_mod_adv`;
 CREATE TABLE `crud_mod_adv` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(50) NOT NULL,
   `Fullname` varchar(50) NOT NULL,
-  `Address` varchar(255) DEFAULT NULL,
-  `Telp` varchar(15) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  `Website` varchar(50) DEFAULT NULL,
   `Custom_id` varchar(255) DEFAULT NULL,
-  `Custom_field` text,
+  `Extend` text,
   `Created_at` datetime NOT NULL,
   `Created_by` varchar(50) NOT NULL,
   `Updated_at` datetime DEFAULT NULL,

@@ -28,6 +28,7 @@ Just make some edit in the **crudmodadv.router.php** file manually.
 
 ### Requirement
 - This module is require **reSlim** minimum version **1.16.0**.
+- This module is require [Genuid](https://github.com/aalfiann/reslim-modules-genuid) module installed.
 
 ### Description
 This **CrudModAdv** is based from [CrudMod](https://github.com/aalfiann/reSlim-modules-crud_mod) which is has many improved feature also this module was designed for general, boilerplate or dynamic purpose, so you may have to make some modification for spesific requirement or different use of your project.

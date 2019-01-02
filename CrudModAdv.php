@@ -5,6 +5,7 @@ use \classes\Auth as Auth;                          //For authentication interna
 use \classes\JSON as JSON;                          //For handling JSON in better way
 use \classes\CustomHandlers as CustomHandlers;      //To get default response message
 use \classes\Validation as Validation;              //To validate the string
+use \modules\genuid\Genuid as Genuid;
 use PDO;                                            //To connect with database
 
 	/**
@@ -27,7 +28,7 @@ use PDO;                                            //To connect with database
         var $username,$token;
 
         //data var
-        var $id,$fullname,$address,$telp,$email,$website,$created_at,$created_by,$updated_at,$updated_by,$custom_id,$custom_field;
+        var $id,$fullname,$created_at,$created_by,$updated_at,$updated_by,$custom_id,$extend;
 
         //search var
 		var $search,$firstdate,$lastdate;
@@ -227,19 +228,18 @@ use PDO;                                            //To connect with database
         //CRUD===========================================
 
 		public function createData(){
+			$guid = new Genuid();
+			$id = $guid->generate_uuidV4();
 			try {
 				$this->db->beginTransaction();
-				$sql = "INSERT INTO crud_mod_adv (Fullname,Address,Telp,Email,Website,Custom_id,Custom_field,Created_at,Created_by) 
-					VALUES (:fullname,:address,:telp,:email,:website,:custom_id,:custom_field,current_timestamp,:username);";
+				$sql = "INSERT INTO crud_mod_adv (ID,Fullname,Custom_id,Extend,Created_at,Created_by) 
+					VALUES (:id,:fullname,:custom_id,:extend,current_timestamp,:username);";
 				$stmt = $this->db->prepare($sql);
+				$stmt->bindParam(':id', $id, PDO::PARAM_STR);
 				$stmt->bindParam(':fullname', $this->fullname, PDO::PARAM_STR);
-				$stmt->bindParam(':address', $this->address, PDO::PARAM_STR);
-				$stmt->bindParam(':telp', $this->telp, PDO::PARAM_STR);
-				$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-				$stmt->bindParam(':website', $this->website, PDO::PARAM_STR);
 				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 				$stmt->bindParam(':custom_id', $this->custom_id, PDO::PARAM_STR);
-                $stmt->bindParam(':custom_field', $this->custom_field, PDO::PARAM_STR);
+                $stmt->bindParam(':extend', $this->extend, PDO::PARAM_STR);
 				if ($stmt->execute()) {
 					$data = [
 						'status' => 'success',
@@ -270,18 +270,14 @@ use PDO;                                            //To connect with database
 			try {
 				$this->db->beginTransaction();
 				$sql = "UPDATE crud_mod_adv 
-					SET Fullname=:fullname,Address=:address,Telp=:telp,Email=:email,Website=:website,Custom_id=:custom_id,Custom_field=:custom_field,
+					SET Fullname=:fullname,Custom_id=:custom_id,Extend=:extend,
 						Updated_at=current_timestamp,Updated_by=:username
 					WHERE ID=:id;";
 				$stmt = $this->db->prepare($sql);
 				$stmt->bindParam(':fullname', $this->fullname, PDO::PARAM_STR);
-				$stmt->bindParam(':address', $this->address, PDO::PARAM_STR);
-				$stmt->bindParam(':telp', $this->telp, PDO::PARAM_STR);
-				$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-				$stmt->bindParam(':website', $this->website, PDO::PARAM_STR);
 				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 				$stmt->bindParam(':custom_id', $this->custom_id, PDO::PARAM_STR);
-                $stmt->bindParam(':custom_field', $this->custom_field, PDO::PARAM_STR);
+                $stmt->bindParam(':extend', $this->extend, PDO::PARAM_STR);
 				$stmt->bindParam(':id', $this->id, PDO::PARAM_STR);
 				if ($stmt->execute()) {
 					$data = [
@@ -342,7 +338,7 @@ use PDO;                                            //To connect with database
 		}
 
 		public function readData(){
-			$sql = "SELECT a.ID,a.Fullname,a.Address,a.Telp,a.Email,a.Website,a.Custom_id,a.Custom_field,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys
+			$sql = "SELECT a.ID,a.Fullname,a.Custom_id,a.Extend,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys
 				FROM crud_mod_adv a
 				WHERE a.ID = :id LIMIT 1;";
 				
@@ -351,7 +347,7 @@ use PDO;                                            //To connect with database
 
 			if ($stmt->execute()) {	
 				if ($stmt->rowCount() > 0){
-					$results = JSON::modifyJsonStringInArray($stmt->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Custom_field']);
+					$results = JSON::modifyJsonStringInArray($stmt->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Extend']);
 					$data = [
 						'result' => $results, 
 						'status' => 'success', 
@@ -404,7 +400,7 @@ use PDO;                                            //To connect with database
 					$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 					// Query Data
-					$sql = "SELECT a.ID,a.Fullname,a.Address,a.Telp,a.Email,a.Website,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys,a.Custom_id,a.Custom_field 
+					$sql = "SELECT a.ID,a.Fullname,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys,a.Custom_id,a.Extend 
 						from crud_mod_adv a
 						where 
 							".(!empty($this->firstdate) && !empty($this->lastdate)?'date(a.Created_at) BETWEEN :firstdate and :lastdate and ':'')."
@@ -424,7 +420,7 @@ use PDO;                                            //To connect with database
 						$pagination->totalRow = $single['TotalRow'];
 						$pagination->page = $this->page;
 						$pagination->itemsPerPage = $this->itemsPerPage;
-						$pagination->fetchAllAssoc = JSON::modifyJsonStringInArray($stmt2->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Custom_field']);
+						$pagination->fetchAllAssoc = JSON::modifyJsonStringInArray($stmt2->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Extend']);
 						$data = $pagination->toDataArray();
 					} else {
 						$data = [
@@ -481,7 +477,7 @@ use PDO;                                            //To connect with database
                     $offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 					// Query Data
 					$sql = "SELECT 
-                            a.ID,a.Fullname,a.Address,a.Telp,a.Email,a.Website,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys,a.Custom_id,a.Custom_field 
+                            a.ID,a.Fullname,a.Created_at,a.Created_by,a.Updated_at,a.Updated_by,a.Updated_sys,a.Custom_id,a.Extend 
                         FROM crud_mod_adv a
                         WHERE 
                             ".(!empty($this->firstdate) && !empty($this->lastdate)?'DATE(a.Created_at) BETWEEN :firstdate AND :lastdate AND ':'')."
@@ -495,7 +491,7 @@ use PDO;                                            //To connect with database
 						$pagination->totalRow = $single['TotalRow'];
 						$pagination->page = $this->page;
 						$pagination->itemsPerPage = $this->itemsPerPage;
-						$pagination->fetchAllAssoc = JSON::modifyJsonStringInArray($stmt2->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Custom_field']);
+						$pagination->fetchAllAssoc = JSON::modifyJsonStringInArray($stmt2->fetchAll(PDO::FETCH_ASSOC),['Custom_id','Extend']);
 						$data = $pagination->toDataArray();
 					} else {
 						$data = [
